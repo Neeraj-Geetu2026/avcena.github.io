@@ -162,7 +162,7 @@ function App() {
               </ul>
               <small className="note">*Only display “Fully Insured” once your business has appropriate insurance.</small>
             </div>
-            <div className="about-photo"><img src="/avcena-homepage-design.png" alt="AVCENA gardening service"/></div>
+            <div className="about-photo"><img src={`${import.meta.env.BASE_URL}avcena-homepage-design.png`} alt="AVCENA gardening service"/></div>
           </div>
         </section>
 

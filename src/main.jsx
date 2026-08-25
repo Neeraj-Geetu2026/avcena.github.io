@@ -10,6 +10,9 @@ import "./styles.css";
 const PHONE = import.meta.env.VITE_CONTACT_PHONE || "021 081 31690";
 const EMAIL = import.meta.env.VITE_CONTACT_EMAIL || "Neerajchauhangvr@gmail.com";
 const AUTO_REPLY = import.meta.env.VITE_AUTO_REPLY || "Thanks for your interest in AVCENA Gardening & Lawnmowing. We will contact you shortly.";
+const SUBMISSION_ENDPOINT = import.meta.env.PROD
+  ? `https://formsubmit.co/ajax/${EMAIL}`
+  : "/api/submit";
 
 const services = [
   ["Lawn Mowing", "Regular or one-off lawn mowing to keep your lawn looking perfect.", Scissors],
@@ -45,7 +48,9 @@ function App() {
     setSubmitted(false);
     setSubmitError("");
     try {
-      const response = await fetch("/api/submit", { method: "POST", body: new FormData(event.currentTarget) });
+      const formData = new FormData(event.currentTarget);
+      formData.set("_subject", "New AVCENA quote enquiry");
+      const response = await fetch(SUBMISSION_ENDPOINT, { method: "POST", body: formData });
       if (!response.ok) {
         const result = await response.json().catch(() => ({}));
         throw new Error(result.error || "Submission failed");

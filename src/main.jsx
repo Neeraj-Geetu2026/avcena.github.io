@@ -6,6 +6,7 @@ import {
   MapPin, Upload, Send, CheckCircle2, Menu, X
 } from "lucide-react";
 import "./styles.css";
+import "./responsive.css";
 
 const PHONE = import.meta.env.VITE_CONTACT_PHONE || "021 081 31690";
 const EMAIL = import.meta.env.VITE_CONTACT_EMAIL || "Neerajchauhangvr@gmail.com";

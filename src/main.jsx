@@ -53,7 +53,7 @@ function App() {
         const fields = {
           _subject: "New AVCENA quote enquiry",
           _autoresponse: AUTO_REPLY,
-          _next: window.location.href
+          _next: `${window.location.origin}${import.meta.env.BASE_URL}thanks.html`
         };
         Object.entries(fields).forEach(([name, value]) => {
           const input = document.createElement("input");

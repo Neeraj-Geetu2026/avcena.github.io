@@ -47,8 +47,9 @@ function App() {
     setSubmitting(true);
     setSubmitted(false);
     setSubmitError("");
+    const form = event.currentTarget;
     try {
-      const formData = new FormData(event.currentTarget);
+      const formData = new FormData(form);
       formData.set("_subject", "New AVCENA quote enquiry");
       const response = await fetch(SUBMISSION_ENDPOINT, { method: "POST", body: formData });
       if (!response.ok) {
@@ -56,10 +57,19 @@ function App() {
         throw new Error(result.error || "Submission failed");
       }
       setSubmitted(true);
-      event.currentTarget.reset();
+      form.reset();
     } catch (error) {
-      setSubmitError(error.message);
-      console.error(error);
+      if (import.meta.env.PROD) {
+        const fields = [...new FormData(form).entries()]
+          .filter(([name, value]) => typeof value === "string" && name !== "_subject")
+          .map(([name, value]) => `${name}: ${value}`)
+          .join("\n");
+        window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent("New AVCENA quote enquiry")}&body=${encodeURIComponent(fields)}`;
+        setSubmitError("Your email app is opening with the enquiry. Please press Send to complete it.");
+      } else {
+        setSubmitError(error.message);
+        console.error(error);
+      }
     } finally {
       setSubmitting(false);
     }

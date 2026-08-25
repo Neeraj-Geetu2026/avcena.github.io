@@ -49,6 +49,25 @@ function App() {
     setSubmitError("");
     const form = event.currentTarget;
     try {
+      if (import.meta.env.PROD) {
+        const fields = {
+          _subject: "New AVCENA quote enquiry",
+          _autoresponse: AUTO_REPLY,
+          _captcha: "false",
+          _next: window.location.href
+        };
+        Object.entries(fields).forEach(([name, value]) => {
+          const input = document.createElement("input");
+          input.type = "hidden";
+          input.name = name;
+          input.value = value;
+          form.appendChild(input);
+        });
+        form.method = "POST";
+        form.action = `https://formsubmit.co/${EMAIL}`;
+        HTMLFormElement.prototype.submit.call(form);
+        return;
+      }
       const formData = new FormData(form);
       formData.set("_subject", "New AVCENA quote enquiry");
       formData.set("_autoresponse", AUTO_REPLY);

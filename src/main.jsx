@@ -53,7 +53,6 @@ function App() {
         const fields = {
           _subject: "New AVCENA quote enquiry",
           _autoresponse: AUTO_REPLY,
-          _captcha: "false",
           _next: window.location.href
         };
         Object.entries(fields).forEach(([name, value]) => {

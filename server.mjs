@@ -7,6 +7,7 @@ dotenv.config({ path: ".env.local" });
 dotenv.config();
 
 const port = Number(process.env.API_PORT || 3001);
+const frontendOrigin = process.env.FRONTEND_ORIGIN || "http://localhost:5173";
 const recipient = process.env.VITE_CONTACT_EMAIL || "Neerajchauhangvr@gmail.com";
 const autoReply = process.env.VITE_AUTO_REPLY || "Thanks for your interest in AVCENA Gardening & Lawnmowing. We will contact you shortly.";
 const from = process.env.RESEND_FROM_EMAIL;
@@ -32,7 +33,7 @@ async function sendEmail(payload) {
 }
 
 const server = http.createServer(async (request, response) => {
-  response.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+  response.setHeader("Access-Control-Allow-Origin", frontendOrigin);
   response.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   if (request.method === "OPTIONS") {
     response.writeHead(204);

@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: avcena-email-api
+    runtime: node
+    buildCommand: npm ci
+    startCommand: npm run server
+    envVars:
+      - key: API_PORT
+        value: 10000
+      - key: FRONTEND_ORIGIN
+        value: https://neeraj-geetu2026.github.io
+      - key: VITE_CONTACT_EMAIL
+        sync: false
+      - key: VITE_AUTO_REPLY
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: RESEND_FROM_EMAIL
+        sync: false

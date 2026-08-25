@@ -10,9 +10,8 @@ import "./styles.css";
 const PHONE = import.meta.env.VITE_CONTACT_PHONE || "021 081 31690";
 const EMAIL = import.meta.env.VITE_CONTACT_EMAIL || "Neerajchauhangvr@gmail.com";
 const AUTO_REPLY = import.meta.env.VITE_AUTO_REPLY || "Thanks for your interest in AVCENA Gardening & Lawnmowing. We will contact you shortly.";
-const SUBMISSION_ENDPOINT = import.meta.env.PROD
-  ? `https://formsubmit.co/ajax/${EMAIL}`
-  : "/api/submit";
+const API_ENDPOINT = import.meta.env.VITE_API_URL || "/api/submit";
+const USE_BACKEND = Boolean(import.meta.env.VITE_API_URL) || !import.meta.env.PROD;
 
 const services = [
   ["Lawn Mowing", "Regular or one-off lawn mowing to keep your lawn looking perfect.", Scissors],
@@ -49,7 +48,7 @@ function App() {
     setSubmitError("");
     const form = event.currentTarget;
     try {
-      if (import.meta.env.PROD) {
+      if (!USE_BACKEND) {
         const fields = {
           _subject: "New AVCENA quote enquiry",
           _autoresponse: AUTO_REPLY,
@@ -70,7 +69,7 @@ function App() {
       const formData = new FormData(form);
       formData.set("_subject", "New AVCENA quote enquiry");
       formData.set("_autoresponse", AUTO_REPLY);
-      const response = await fetch(SUBMISSION_ENDPOINT, { method: "POST", body: formData });
+      const response = await fetch(API_ENDPOINT, { method: "POST", body: formData });
       if (!response.ok) {
         const result = await response.json().catch(() => ({}));
         throw new Error(result.error || "Submission failed");
@@ -78,7 +77,7 @@ function App() {
       setSubmitted(true);
       form.reset();
     } catch (error) {
-      if (import.meta.env.PROD) {
+      if (!USE_BACKEND) {
         const fields = [...new FormData(form).entries()]
           .filter(([name, value]) => typeof value === "string" && name !== "_subject")
           .map(([name, value]) => `${name}: ${value}`)

@@ -51,6 +51,7 @@ function App() {
     try {
       const formData = new FormData(form);
       formData.set("_subject", "New AVCENA quote enquiry");
+      formData.set("_autoresponse", AUTO_REPLY);
       const response = await fetch(SUBMISSION_ENDPOINT, { method: "POST", body: formData });
       if (!response.ok) {
         const result = await response.json().catch(() => ({}));

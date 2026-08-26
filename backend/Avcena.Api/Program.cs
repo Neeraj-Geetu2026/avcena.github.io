@@ -19,8 +19,9 @@ app.Use(async (context, next) =>
 
 app.UseExceptionHandler(errorApp => errorApp.Run(async context =>
 {
+	var exception = context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerFeature>()?.Error;
 	var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
-	logger.LogError("Unhandled API exception for {Path}", context.Request.Path);
+	logger.LogError(exception, "Unhandled API exception for {Path}", context.Request.Path);
 	context.Response.StatusCode = StatusCodes.Status500InternalServerError;
 	await context.Response.WriteAsJsonAsync(new
 	{

@@ -1,0 +1,12 @@
+D:\AVCENA-Gardening-Website\backend\Avcena.Domain\bin\Debug\net9.0\Avcena.Domain.deps.json
+D:\AVCENA-Gardening-Website\backend\Avcena.Domain\bin\Debug\net9.0\Avcena.Domain.dll
+D:\AVCENA-Gardening-Website\backend\Avcena.Domain\bin\Debug\net9.0\Avcena.Domain.pdb
+D:\AVCENA-Gardening-Website\backend\Avcena.Domain\obj\Debug\net9.0\Avcena.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\AVCENA-Gardening-Website\backend\Avcena.Domain\obj\Debug\net9.0\Avcena.Domain.AssemblyInfoInputs.cache
+D:\AVCENA-Gardening-Website\backend\Avcena.Domain\obj\Debug\net9.0\Avcena.Domain.AssemblyInfo.cs
+D:\AVCENA-Gardening-Website\backend\Avcena.Domain\obj\Debug\net9.0\Avcena.Domain.csproj.CoreCompileInputs.cache
+D:\AVCENA-Gardening-Website\backend\Avcena.Domain\obj\Debug\net9.0\Avcena.Domain.sourcelink.json
+D:\AVCENA-Gardening-Website\backend\Avcena.Domain\obj\Debug\net9.0\Avcena.Domain.dll
+D:\AVCENA-Gardening-Website\backend\Avcena.Domain\obj\Debug\net9.0\refint\Avcena.Domain.dll
+D:\AVCENA-Gardening-Website\backend\Avcena.Domain\obj\Debug\net9.0\Avcena.Domain.pdb
+D:\AVCENA-Gardening-Website\backend\Avcena.Domain\obj\Debug\net9.0\ref\Avcena.Domain.dll

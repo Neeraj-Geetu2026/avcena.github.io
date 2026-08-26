@@ -410,7 +410,37 @@ The initial API health check is available at `GET /health` and returns:
 ```json
 {"status":"ok"}
 ```
-- Resend is called by backend services only.
-- Media files use object/file storage; SQL Server stores metadata.
-- GitHub Actions builds frontend/backend, runs tests and security checks, and deploys verified artifacts.
-- Secrets remain in environment variables or managed secret stores, never in React.
+
+## 20. Pre-admin implementation requirements
+
+The following decisions and foundations must be completed before building the Admin Portal UI:
+
+### Authentication decisions
+
+- Initial release does not require MFA; keep the design extensible for later MFA support.
+- Define account lockout thresholds, login rate limits, session lifetime, token revocation, and logout-all-sessions behavior.
+- Define the permission matrix for `SuperAdmin`, `BusinessAdmin`, `ContentManager`, `EnquiryManager`, and `ReviewManager`.
+- Support admin invitation, deactivation/reactivation, password change, and secure password reset.
+
+### Database rules
+
+- Define primary keys, foreign keys, indexes, unique constraints, timestamps, and soft-delete behavior.
+- Define enquiry statuses such as `New`, `In Progress`, `Quoted`, `Completed`, and `Closed`.
+- Define privacy, customer-data retention, audit-log retention, and email-log retention policies.
+- Establish migrations, seed data, development/test databases, backup schedules, and restore procedures.
+
+### API and operations
+
+- Define API versioning, CORS policy, pagination, search, filtering, sorting, idempotency, and concurrency behavior.
+- Add global exception handling, safe response envelopes, correlation IDs, structured logging, and readiness checks.
+- Define email templates, retry behavior, duplicate-send prevention, and delivery/failure statuses.
+- Define upload limits, image resizing, thumbnails, malware scanning, storage quotas, and orphan-file cleanup.
+- Define monitoring, alerts, deployment environments, secret rotation, RPO, and RTO.
+
+### Acceptance and testing gates
+
+- Every admin feature needs acceptance criteria and role-based authorization tests.
+- Add API integration tests for authentication, password reset, services, offers, enquiries, reviews, and settings.
+- Add end-to-end tests for quote submission, review moderation, and password reset.
+- Test public and admin interfaces on mobile, tablet, and desktop, including accessibility and browser compatibility.
+- Run dependency scanning, security tests, and restore drills before production release.

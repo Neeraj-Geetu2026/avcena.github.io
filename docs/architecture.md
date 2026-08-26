@@ -1,15 +1,3 @@
-# AVCENA Architecture
-
-## Current foundation
-
-
-## First endpoint
-
-`GET /health` returns a small service-health response:
-
-```json
-{"status":"ok"}
-```
 # AVCENA Production Architecture
 
 ## 1. Purpose and principles
@@ -76,6 +64,8 @@ AVCENA-Gardening-Website/
 ```
 
 The current public frontend remains at the repository root during migration. The backend foundation currently exists under `backend/` and exposes `GET /health`.
+
+Production must provide `AllowedHosts` through deployment configuration with the actual API hostname. The API fails fast if production is started with only local hostnames.
 
 ## 4. Public website capabilities
 
@@ -230,6 +220,25 @@ Required controls:
 - Database backups with tested restoration.
 
 Never put SQL passwords, API keys, Resend keys, admin passwords, or JWT secrets in React or any client bundle.
+
+### Role-permission matrix
+
+| Permission | SuperAdmin | BusinessAdmin | ContentManager | EnquiryManager | ReviewManager |
+|---|---:|---:|---:|---:|---:|
+| View dashboard | Yes | Yes | Yes | Yes | Yes |
+| Manage users and roles | Yes | No | No | No | No |
+| Manage system settings | Yes | No | No | No | No |
+| Manage services and categories | Yes | Yes | Yes | No | No |
+| Manage offers | Yes | Yes | Yes | No | No |
+| Manage pages and website content | Yes | Yes | Yes | No | No |
+| Manage media | Yes | No | Yes | No | No |
+| Manage SEO | Yes | No | Yes | No | No |
+| View and update enquiries | Yes | Yes | No | Yes | No |
+| View and moderate reviews | Yes | Yes | No | No | Yes |
+| View audit logs | Yes | Yes | Yes | No | No |
+| Change own password | Yes | Yes | Yes | Yes | Yes |
+
+The API must enforce these permissions server-side with deny-by-default authorization. React may hide unavailable actions for usability, but frontend visibility is never a security control.
 
 ## 10. Email architecture
 

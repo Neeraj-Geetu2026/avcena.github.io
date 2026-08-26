@@ -32,6 +32,18 @@ jobs:
         env:
           VITE_API_URL: ${{ vars.VITE_API_URL }}
           VITE_BASE_PATH: ${{ vars.VITE_BASE_PATH }}
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+      - name: Restore backend
+        run: dotnet restore backend/Avcena.sln
+      - name: Build backend
+        run: dotnet build backend/Avcena.sln --configuration Release --no-restore
+      - name: Test backend
+        run: dotnet test backend/Avcena.sln --configuration Release --no-build --no-restore
+      - name: Check vulnerable packages
+        run: dotnet list backend/Avcena.sln package --vulnerable --include-transitive
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

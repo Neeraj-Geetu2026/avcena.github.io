@@ -1,10 +1,17 @@
 var builder = WebApplication.CreateBuilder(args);
 
+var configuredHosts = builder.Configuration["AllowedHosts"]?.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries) ?? [];
+if (builder.Environment.IsProduction() && configuredHosts.All(host => host is "localhost" or "127.0.0.1"))
+{
+	throw new InvalidOperationException("Configure AllowedHosts with the deployed API hostname before running in production.");
+}
+
 var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
 builder.Services.AddCors(options => options.AddPolicy("PublicApi", policy =>
 {
 	if (allowedOrigins.Length > 0) policy.WithOrigins(allowedOrigins);
-	policy.AllowAnyHeader().AllowAnyMethod();
+	policy.WithHeaders("Content-Type", "Authorization", "X-Request-ID")
+		.WithMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS");
 }));
 
 var app = builder.Build();

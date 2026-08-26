@@ -23,3 +23,9 @@
     gap: 20px;
   }
 }
+
+@media (min-width: 901px) {
+  .about-grid {
+    grid-template-columns: minmax(0, 680px);
+  }
+}

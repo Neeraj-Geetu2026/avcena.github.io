@@ -102,7 +102,13 @@ function App() {
             <span className="brand-mark"><Leaf size={28} fill="currentColor"/></span>
             <span><b>AVCENA</b><small>GARDENING & LAWNMOWING</small></span>
           </button>
-          <button className="menu-btn" onClick={() => setMenu(!menu)}>{menu ? <X/> : <Menu/>}</button>
+          <button
+            className="menu-btn"
+            type="button"
+            aria-label={menu ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={menu}
+            onClick={() => setMenu(!menu)}
+          >{menu ? <X/> : <Menu/>}</button>
           <nav className={menu ? "nav-links open" : "nav-links"}>
             {[
               ["Home","home"],["Services","services"],["About Us","about"],
@@ -212,10 +218,10 @@ function App() {
               <div className="contact-line"><MapPin/><span>Auckland, New Zealand</span></div>
               <div className="contact-line"><span className="email-icon">@</span><a href={`mailto:${EMAIL}`}>{EMAIL}</a></div>
             </div>
-            <form className="quote-form" onSubmit={submit}>
+            <form className="quote-form" encType="multipart/form-data" onSubmit={submit}>
               <h3>Fast, Easy & Obligation Free</h3>
               {submitted && <div className="success"><CheckCircle2/> Thanks! Your enquiry has been sent.</div>}
-              {submitError && <div className="success">{submitError}</div>}
+              {submitError && <div className="success" role="alert">{submitError}</div>}
               <div className="two"><label>Your Name *<input required name="name"/></label><label>Phone Number *<input required name="phone" type="tel"/></label></div>
               <label>Email Address *<input required name="email" type="email"/></label>
               <label>Property Address *<input required name="address"/></label>

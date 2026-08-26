@@ -169,7 +169,7 @@ function App() {
               </ul>
               <small className="note">*Only display “Fully Insured” once your business has appropriate insurance.</small>
             </div>
-            <div className="about-photo"><img src={`${import.meta.env.BASE_URL}avcena-homepage-design.png`} alt="AVCENA gardener mowing a lawn" /></div>
+            <div className="about-photo"><img src={`${import.meta.env.BASE_URL}avcena-gardener.jpg`} alt="AVCENA gardener trimming a hedge" /></div>
           </div>
         </section>
 

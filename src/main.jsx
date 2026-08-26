@@ -31,7 +31,7 @@ const areas = [
   "Henderson", "Glen Eden", "Titirangi", "Surrounding Auckland"
 ];
 
-function App() {
+export function App() {
   const [menu, setMenu] = React.useState(false);
   const [submitted, setSubmitted] = React.useState(false);
   const [submitting, setSubmitting] = React.useState(false);
@@ -111,9 +111,11 @@ function App() {
           >{menu ? <X/> : <Menu/>}</button>
           <nav className={menu ? "nav-links open" : "nav-links"}>
             {[
-              ["Home","home"],["Services","services"],["About Us","about"],
+              ["Home","home"],["Services","services"],["About Us","about","about.html"],
               ["Gallery","gallery"],["Areas We Service","areas"],["Reviews","reviews"],["Contact","contact"]
-            ].map(([label,id]) => <button key={id} onClick={() => scrollTo(id)}>{label}</button>)}
+            ].map(([label,id,href]) => href
+              ? <button key={id} onClick={() => { window.location.href = `${import.meta.env.BASE_URL}${href}`; }}>{label}</button>
+              : <button key={id} onClick={() => scrollTo(id)}>{label}</button>)}
           </nav>
           <a className="phone" href={`tel:${PHONE.replaceAll(" ","")}`}>
             <span className="phone-icon"><Phone size={18} fill="currentColor"/></span>
@@ -251,4 +253,5 @@ function App() {
   );
 }
 
-createRoot(document.getElementById("root")).render(<App />);
+const root = document.getElementById("root");
+if (root) createRoot(root).render(<App />);

@@ -13,6 +13,8 @@ public class UnitTest1
         using var response = await client.GetAsync("/health");
 
         response.EnsureSuccessStatusCode();
+        Assert.Equal("nosniff", response.Headers.GetValues("X-Content-Type-Options").Single());
+        Assert.Equal("DENY", response.Headers.GetValues("X-Frame-Options").Single());
         Assert.Contains("\"status\":\"ok\"", await response.Content.ReadAsStringAsync());
     }
 }

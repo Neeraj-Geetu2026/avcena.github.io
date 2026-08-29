@@ -243,7 +243,11 @@ function App() {
         <div className="container footer-simple">
           <div className="footer-brand"><Leaf size={28}/><span><b>AVCENA</b><small>GARDENING & LAWNMOWING</small></span></div>
           <span className="footer-location"><MapPin size={15}/> Auckland, New Zealand</span>
-          <div className="footer-meta"><span>© 2026 AVCENA Gardening & Lawnmowing</span><a href={`mailto:${EMAIL}`}>Contact us by email</a></div>
+          <div className="footer-meta">
+            <span>© 2026 AVCENA Gardening & Lawnmowing</span>
+            <a href={`mailto:${EMAIL}`}>Contact us by email</a>
+            <a href={`${import.meta.env.BASE_URL}privacy-policy.html`}>Privacy Policy</a>
+          </div>
           <a className="footer-call" href={`tel:${PHONE.replaceAll(" ","")}`} aria-label={`Call AVCENA on ${PHONE}`}><Phone size={20}/><small>CALL US</small></a>
         </div>
       </footer>

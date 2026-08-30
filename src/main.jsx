@@ -127,9 +127,9 @@ function App() {
         <section id="home" className="hero">
           <div className="hero-overlay"/>
           <div className="container hero-content">
-            <p className="eyebrow">PROFESSIONAL GARDENING & LAWNMOWING</p>
-            <h1>Beautiful Gardens.<br/>Perfect Lawns.</h1>
-            <p className="hero-copy">Reliable, high-quality and affordable gardening and lawn care services across Auckland.</p>
+            <p className="eyebrow">AUCKLAND LAWN MOWING & GARDEN CARE</p>
+            <h1>Professional Lawn Mowing.<br/>Beautiful Gardens.</h1>
+            <p className="hero-copy">Reliable lawn mowing, garden maintenance, hedge trimming and garden clean-ups for homes and properties across Auckland.</p>
             <div className="actions">
               <button className="btn primary" onClick={() => scrollTo("contact")}><ArrowRight size={18}/> GET A FREE QUOTE</button>
             </div>
@@ -150,7 +150,8 @@ function App() {
         <section id="services" className="section">
           <div className="container">
             <p className="eyebrow green">OUR SERVICES</p>
-            <h2>Complete Garden & Lawn Care</h2>
+            <h2>Complete Auckland Garden & Lawn Care</h2>
+            <p className="services-intro">From regular lawn mowing to hedge trimming, garden maintenance and green waste removal, AVCENA helps homeowners and property owners keep outdoor spaces neat, healthy and well maintained across Auckland.</p>
             <div className="services-grid">
               {services.map(([title,desc,Icon]) => <article className="service-card" key={title}>
                 <Icon className="service-icon"/><h3>{title}</h3><p>{desc}</p>
@@ -164,7 +165,7 @@ function App() {
             <div>
               <p className="eyebrow green">ABOUT AVCENA</p>
               <h2>Your Local Gardening<br/>& Lawn Care Experts</h2>
-              <p>AVCENA Gardening & Lawnmowing is an Auckland-focused lawn and garden care business. We are passionate about providing tidy, reliable and affordable outdoor maintenance.</p>
+              <p>AVCENA Gardening & Lawnmowing is an Auckland-focused lawn and garden care business providing reliable lawn mowing, garden maintenance, hedge trimming, weed removal and general outdoor care for homes and properties across the region.</p>
               <ul className="checks">
                 {["Experienced & Friendly Team","Quality Equipment","Reliable Service","Fully Insured*"].map(x => <li key={x}><CheckCircle2 size={19}/>{x}</li>)}
               </ul>

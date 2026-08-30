@@ -14,23 +14,11 @@ const EMAIL = import.meta.env.VITE_CONTACT_EMAIL || "Neerajchauhangvr@gmail.com"
 const AUTO_REPLY = import.meta.env.VITE_AUTO_REPLY || "Thanks for your interest in AVCENA Gardening & Lawnmowing. We will contact you shortly.";
 const API_ENDPOINT = import.meta.env.VITE_API_URL || "/api/submit";
 const USE_BACKEND = Boolean(import.meta.env.VITE_API_URL) || !import.meta.env.PROD;
-
-const services = [
-  ["Lawn Mowing", "Regular or one-off lawn mowing to keep your lawn looking perfect.", Scissors],
-  ["Lawn Edging", "Neat and clean edges for a professional finish.", Leaf],
-  ["Garden Maintenance", "Weeding, trimming, pruning and general garden care.", Sprout],
-  ["Hedge Trimming", "Keep your hedges neat, healthy and well shaped.", TreePine],
-  ["Weed Removal", "Effective weed control to keep your garden clean.", Sprout],
-  ["Garden Clean Ups", "One-off or seasonal garden clean ups.", Trash2],
-  ["Green Waste Removal", "We remove and dispose of green waste responsibly.", Trash2],
-  ["Regular Maintenance", "Weekly, fortnightly or monthly garden and lawn care.", CalendarDays]
-];
-
-const areas = [
-  "Mt Albert", "St Lukes", "Sandringham", "Epsom",
-  "Mt Roskill", "Avondale", "New Lynn", "Blockhouse Bay",
-  "Henderson", "Glen Eden", "Titirangi", "Surrounding Auckland"
-];
+const enabledServices = siteConfig.services.filter((service) => service.enabled);
+const enabledAreaList = siteConfig.areas.filter((area) => area.enabled).map((area) => area.name);
+const enabledTrustItems = siteConfig.trustItems.filter((item) => item.enabled);
+const enabledReviews = siteConfig.reviews.filter((review) => review.enabled);
+const enabledSuburbContent = siteConfig.suburbContent.filter((item) => item.enabled);
 
 function App() {
   const [menu, setMenu] = React.useState(false);
@@ -136,27 +124,24 @@ function App() {
           </div>
         </section>
 
+        {siteConfig.sections.services && (
+          <section id="services" className="section">
+            <div className="container">
+              <p className="eyebrow green">OUR SERVICES</p>
+              <h2>Complete Auckland Garden & Lawn Care</h2>
+              <p className="services-intro">From regular lawn mowing and garden maintenance to hedge trimming, weed removal and green waste removal, AVCENA helps homeowners and property owners keep outdoor spaces neat, healthy and well maintained across Auckland.</p>
+              <div className="services-grid">
+                {enabledServices.map(({ title, description, icon: Icon }) => <article className="service-card" key={title}>
+                  <Icon className="service-icon"/><h3>{title}</h3><p>{description}</p>
+                </article>)}
+              </div>
+            </div>
+          </section>
+        )}
+
         <section className="trust">
           <div className="container trust-grid">
-            {[
-              [Clock3,"Reliable & Punctual","We show up on time, every time."],
-              [Star,"High Quality Work","We take pride in every lawn and garden."],
-              [CircleDollarSign,"Affordable Prices","Quality service at competitive rates."],
-              [ShieldCheck,"Satisfaction Guaranteed","We aim for 100% satisfaction on every job."]
-            ].map(([Icon,t,d]) => <div className="trust-item" key={t}><Icon/><div><b>{t}</b><span>{d}</span></div></div>)}
-          </div>
-        </section>
-
-        <section id="services" className="section">
-          <div className="container">
-            <p className="eyebrow green">OUR SERVICES</p>
-            <h2>Complete Auckland Garden & Lawn Care</h2>
-            <p className="services-intro">From regular lawn mowing and garden maintenance to hedge trimming, weed removal and green waste removal, AVCENA helps homeowners and property owners keep outdoor spaces neat, healthy and well maintained across Auckland.</p>
-            <div className="services-grid">
-              {services.map(([title,desc,Icon]) => <article className="service-card" key={title}>
-                <Icon className="service-icon"/><h3>{title}</h3><p>{desc}</p>
-              </article>)}
-            </div>
+            {enabledTrustItems.map(({ icon: Icon, title, description }) => <div className="trust-item" key={title}><Icon/><div><b>{title}</b><span>{description}</span></div></div>)}
           </div>
         </section>
 
@@ -193,22 +178,37 @@ function App() {
           </div>
         </section>
 
-        <section id="reviews" className="section reviews">
-          <div className="container review-grid">
-            <div className="review-card">
-              <p className="eyebrow green">WHAT OUR CLIENTS SAY</p>
-              <h2>Trusted by Auckland Homeowners</h2>
-              <div className="stars">{[1,2,3,4,5].map(i=><Star key={i} size={18} fill="currentColor"/>)}</div>
-              <p className="quote">“AVCENA did an amazing job on our lawn and garden. Very reliable, friendly and the results are outstanding. Highly recommend their service.”</p>
-              <b>— Customer Review</b><small>Auckland, New Zealand</small>
+        {siteConfig.sections.reviews && (
+          <section id="reviews" className="section reviews">
+            <div className="container review-grid">
+              <div className="review-card">
+                <p className="eyebrow green">WHAT OUR CLIENTS SAY</p>
+                <h2>Trusted by Auckland Homeowners</h2>
+                <div className="stars">{[1,2,3,4,5].map(i=><Star key={i} size={18} fill="currentColor"/>)}</div>
+                {enabledReviews.length > 0 ? (
+                  <>
+                    <p className="quote">“{enabledReviews[0].quote}”</p>
+                    <b>— {enabledReviews[0].name}</b><small>{enabledReviews[0].location}</small>
+                  </>
+                ) : null}
+              </div>
+              {siteConfig.sections.areas && (
+                <div id="areas">
+                  <p className="eyebrow green">AREAS WE SERVICE</p>
+                  <h2>Proudly Serving Auckland</h2>
+                  <div className="areas">{enabledAreaList.map(a=><span key={a}><MapPin size={16}/>{a}</span>)}</div>
+                  {enabledSuburbContent.length > 0 && (
+                    <div className="suburb-content">
+                      {enabledSuburbContent.map((item) => (
+                        <p key={item.name}><strong>{item.name}:</strong> {item.text}</p>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
-            <div id="areas">
-              <p className="eyebrow green">AREAS WE SERVICE</p>
-              <h2>Proudly Serving Auckland</h2>
-              <div className="areas">{areas.map(a=><span key={a}><MapPin size={16}/>{a}</span>)}</div>
-            </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         <section id="contact" className="section contact">
           <div className="container contact-grid">
@@ -219,6 +219,9 @@ function App() {
               <div className="contact-line"><Phone/><a href={`tel:${PHONE.replaceAll(" ","")}`}>{PHONE}</a></div>
               <div className="contact-line"><MapPin/><span>Auckland, New Zealand</span></div>
               <div className="contact-line"><span className="email-icon">@</span><a href={`mailto:${EMAIL}`}>{EMAIL}</a></div>
+              {siteConfig.googleBusinessProfile.enabled && (
+                <div className="contact-line"><span className="email-icon">G</span><a href={siteConfig.googleBusinessProfile.url} target="_blank" rel="noreferrer">{siteConfig.googleBusinessProfile.label}</a></div>
+              )}
             </div>
             <form className="quote-form" encType="multipart/form-data" onSubmit={submit}>
               <h3>Fast, Easy & Obligation Free</h3>
@@ -228,7 +231,7 @@ function App() {
               <label>Email Address *<input required name="email" type="email"/></label>
               <label>Property Address *<input required name="address"/></label>
               <label>Service Required *
-                <select required defaultValue="" name="service"><option value="" disabled>Select a service</option>{services.map(([s])=><option key={s}>{s}</option>)}</select>
+                <select required defaultValue="" name="service"><option value="" disabled>Select a service</option>{enabledServices.map(({ title })=><option key={title}>{title}</option>)}</select>
               </label>
               <div className="two"><label>One-off or Regular *
                 <select required defaultValue="" name="frequency"><option value="" disabled>Select</option><option>One-off</option><option>Weekly</option><option>Fortnightly</option><option>Monthly</option></select>

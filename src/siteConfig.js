@@ -56,6 +56,11 @@ export const siteConfig = {
     label: "Google Business Profile",
     url: "https://www.google.com/search?q=AVCENA+Gardening+%26+Lawnmowing+Auckland"
   },
+  googleReview: {
+    enabled: true,
+    label: "Google Review",
+    url: "https://www.google.com/search?q=AVCENA+Gardening+%26+Lawnmowing+Auckland"
+  },
   reviewRequest: {
     enabled: true,
     label: "Leave a review",

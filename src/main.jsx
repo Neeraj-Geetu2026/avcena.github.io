@@ -305,6 +305,9 @@ function App() {
               {siteConfig.googleBusinessProfile.enabled && (
                 <div className="contact-line"><span className="email-icon">G</span><a href={siteConfig.googleBusinessProfile.url} target="_blank" rel="noreferrer">{siteConfig.googleBusinessProfile.label}</a></div>
               )}
+              {siteConfig.googleReview.enabled && (
+                <div className="contact-line"><span className="email-icon">★</span><a href={siteConfig.googleReview.url} target="_blank" rel="noreferrer">{siteConfig.googleReview.label}</a></div>
+              )}
               {siteConfig.reviewRequest.enabled && (
                 <div className="contact-line"><span className="email-icon">★</span><a href={siteConfig.reviewRequest.url} target="_blank" rel="noreferrer">{siteConfig.reviewRequest.label}</a></div>
               )}

@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import "./styles.css";
 import "./responsive.css";
+import { siteConfig } from "./siteConfig";
 
 const PHONE = import.meta.env.VITE_CONTACT_PHONE || "021 081 31690";
 const EMAIL = import.meta.env.VITE_CONTACT_EMAIL || "Neerajchauhangvr@gmail.com";
@@ -246,7 +247,9 @@ function App() {
           <div className="footer-meta">
             <span>© 2026 AVCENA Gardening & Lawnmowing</span>
             <a href={`mailto:${EMAIL}`}>Contact us by email</a>
-            <a href={`${import.meta.env.BASE_URL}privacy-policy.html`}>Privacy Policy</a>
+            {siteConfig.privacyPolicy.enabled && (
+              <a href={`${import.meta.env.BASE_URL}${siteConfig.privacyPolicy.path.replace(/^\//, "")}`}>Privacy Policy</a>
+            )}
           </div>
           <a className="footer-call" href={`tel:${PHONE.replaceAll(" ","")}`} aria-label={`Call AVCENA on ${PHONE}`}><Phone size={20}/><small>CALL US</small></a>
         </div>

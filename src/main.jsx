@@ -26,6 +26,36 @@ function App() {
   const [submitting, setSubmitting] = React.useState(false);
   const [submitError, setSubmitError] = React.useState("");
 
+  const [customerReviews, setCustomerReviews] = React.useState(() => {
+    try {
+      const saved = localStorage.getItem("avcenaCustomerReviews");
+      if (!saved) return [...siteConfig.reviews.filter((review) => review.enabled)];
+      const parsed = JSON.parse(saved);
+      return Array.isArray(parsed) && parsed.length ? parsed : [...siteConfig.reviews.filter((review) => review.enabled)];
+    } catch {
+      return [...siteConfig.reviews.filter((review) => review.enabled)];
+    }
+  });
+
+  const [reviewForm, setReviewForm] = React.useState({ name: "", suburb: "", rating: 5, quote: "" });
+  const [reviewSubmitted, setReviewSubmitted] = React.useState(false);
+  const [reviewLinkCopied, setReviewLinkCopied] = React.useState(false);
+
+  React.useEffect(() => {
+    localStorage.setItem("avcenaCustomerReviews", JSON.stringify(customerReviews));
+  }, [customerReviews]);
+
+  const handleCopyReviewLink = async () => {
+    if (!siteConfig.reviewRequest.enabled) return;
+    try {
+      await navigator.clipboard.writeText(siteConfig.reviewRequest.url);
+      setReviewLinkCopied(true);
+      setTimeout(() => setReviewLinkCopied(false), 2200);
+    } catch {
+      window.open(siteConfig.reviewRequest.url, "_blank", "noreferrer");
+    }
+  };
+
   const scrollTo = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     setMenu(false);
@@ -81,6 +111,24 @@ function App() {
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleReviewSubmit = (event) => {
+    event.preventDefault();
+    if (!reviewForm.name.trim() || !reviewForm.quote.trim()) return;
+
+    const newReview = {
+      quote: reviewForm.quote.trim(),
+      name: reviewForm.name.trim(),
+      location: reviewForm.suburb.trim() ? `${reviewForm.suburb.trim()}, Auckland` : "Auckland, New Zealand",
+      rating: Number(reviewForm.rating) || 5,
+      enabled: true
+    };
+
+    setCustomerReviews((prev) => [newReview, ...prev]);
+    setReviewForm({ name: "", suburb: "", rating: 5, quote: "" });
+    setReviewSubmitted(true);
+    setTimeout(() => setReviewSubmitted(false), 2500);
   };
 
   return (
@@ -185,15 +233,50 @@ function App() {
                 <p className="eyebrow green">WHAT OUR CLIENTS SAY</p>
                 <h2>Trusted by Auckland Homeowners</h2>
                 <div className="stars">{[1,2,3,4,5].map(i=><Star key={i} size={18} fill="currentColor"/>)}</div>
-                {enabledReviews.length > 0 ? (
+                {customerReviews.length > 0 ? (
                   <>
-                    <p className="quote">“{enabledReviews[0].quote}”</p>
-                    <b>— {enabledReviews[0].name}</b><small>{enabledReviews[0].location}</small>
+                    <div className="review-list">
+                      {customerReviews.slice(0, 3).map((review, index) => (
+                        <div className="mini-review" key={`${review.name}-${index}`}>
+                          <div className="mini-stars">{[...Array(review.rating || 5)].map((_, i) => <Star key={i} size={14} fill="currentColor"/>)}</div>
+                          <p className="quote">“{review.quote}”</p>
+                          <b>— {review.name}</b><small>{review.location}</small>
+                        </div>
+                      ))}
+                    </div>
                   </>
                 ) : null}
               </div>
+
+              {siteConfig.sections.reviewForm && (
+                <div className="review-form-wrap">
+                  <h3>Leave a Review</h3>
+                  {siteConfig.reviewRequest.enabled && (
+                    <div className="review-cta">
+                      <span>Happy with the service? Share the review link with your customer after the job.</span>
+                      <button type="button" className="btn outline small" onClick={handleCopyReviewLink}>Copy review link</button>
+                      {reviewLinkCopied && <div className="success review-success"><CheckCircle2/> Review link copied.</div>}
+                    </div>
+                  )}
+                  <form className="review-form" onSubmit={handleReviewSubmit}>
+                    <div className="two">
+                      <label>Your Name<input value={reviewForm.name} onChange={(event) => setReviewForm({ ...reviewForm, name: event.target.value })} required /></label>
+                      <label>Suburb<input value={reviewForm.suburb} onChange={(event) => setReviewForm({ ...reviewForm, suburb: event.target.value })} /></label>
+                    </div>
+                    <label>Rating
+                      <select value={reviewForm.rating} onChange={(event) => setReviewForm({ ...reviewForm, rating: Number(event.target.value) })}>
+                        {[5,4,3,2,1].map((value) => <option key={value} value={value}>{value} star{value > 1 ? "s" : ""}</option>)}
+                      </select>
+                    </label>
+                    <label>Your Review<textarea rows="4" value={reviewForm.quote} onChange={(event) => setReviewForm({ ...reviewForm, quote: event.target.value })} required placeholder="Tell others how great the service was..." /></label>
+                    <button className="btn primary full" type="submit">POST REVIEW</button>
+                    {reviewSubmitted && <div className="success review-success"><CheckCircle2/> Thanks! Your review has been added.</div>}
+                  </form>
+                </div>
+              )}
+
               {siteConfig.sections.areas && (
-                <div id="areas">
+                <div id="areas" className="areas-panel">
                   <p className="eyebrow green">AREAS WE SERVICE</p>
                   <h2>Proudly Serving Auckland</h2>
                   <div className="areas">{enabledAreaList.map(a=><span key={a}><MapPin size={16}/>{a}</span>)}</div>
@@ -221,6 +304,9 @@ function App() {
               <div className="contact-line"><span className="email-icon">@</span><a href={`mailto:${EMAIL}`}>{EMAIL}</a></div>
               {siteConfig.googleBusinessProfile.enabled && (
                 <div className="contact-line"><span className="email-icon">G</span><a href={siteConfig.googleBusinessProfile.url} target="_blank" rel="noreferrer">{siteConfig.googleBusinessProfile.label}</a></div>
+              )}
+              {siteConfig.reviewRequest.enabled && (
+                <div className="contact-line"><span className="email-icon">★</span><a href={siteConfig.reviewRequest.url} target="_blank" rel="noreferrer">{siteConfig.reviewRequest.label}</a></div>
               )}
             </div>
             <form className="quote-form" encType="multipart/form-data" onSubmit={submit}>

@@ -13,6 +13,7 @@ export const siteConfig = {
     about: true,
     gallery: true,
     reviews: true,
+    reviewForm: true,
     areas: true,
     contact: true,
     googleBusinessProfile: true
@@ -46,6 +47,7 @@ export const siteConfig = {
       quote: "AVCENA did an amazing job on our lawn and garden. Very reliable, friendly and the results are outstanding. Highly recommend their service.",
       name: "Customer Review",
       location: "Auckland, New Zealand",
+      rating: 5,
       enabled: true
     }
   ],
@@ -53,6 +55,12 @@ export const siteConfig = {
     enabled: true,
     label: "Google Business Profile",
     url: "https://www.google.com/search?q=AVCENA+Gardening+%26+Lawnmowing+Auckland"
+  },
+  reviewRequest: {
+    enabled: true,
+    label: "Leave a review",
+    url: "https://neeraj-geetu2026.github.io/avcena.github.io/#reviews",
+    messengerText: "Thanks for choosing AVCENA Gardening & Lawnmowing. We’d really appreciate your feedback. Please leave a review here: https://neeraj-geetu2026.github.io/avcena.github.io/#reviews"
   },
   trustItems: [
     { icon: Clock3, title: "Reliable & Punctual", description: "We show up on time, every time.", enabled: true },
